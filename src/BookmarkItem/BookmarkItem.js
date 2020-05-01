@@ -4,28 +4,27 @@ import BookmarksContext from '../BookmarksContext';
 import config from '../config';
 import './BookmarkItem.css';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 function deleteBookmarkRequest(bookmarkId, callback) {
   fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
     method: 'DELETE',
     headers: {
-      'authorization': `bearer ${config.API_KEY}`
+      'authorization': `Bearer ${config.API_KEY}`
     }
   })
-    .then(res => {
-      if (!res.ok) {
-        // get the error message from the response,
-        return res.json().then(error => {
-          // then throw it
-          throw error
-        })
-      }
-      return res.json()
-    })
-    .then(data => {
+  .then(res => {
+    if (!res.ok) {
+      return res.json().then(error => Promise.reject(error))
+    }
+    // no content on success, so skip res.json()
+  })
+    .then(() => {
       // call the callback when the request is successful
       // this is where the App component can remove it from state
+      console.log(`last then statement ran`)
       callback(bookmarkId)
+      
     })
     .catch(error => {
       console.error(error)
@@ -63,6 +62,7 @@ export default function BookmarkItem(props) {
         >
           Delete
         </button>
+        <Link to={`/edit/${props.id}`}>Edit Bookmark</Link>
       </div>
     </li>
     )}

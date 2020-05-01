@@ -62,7 +62,7 @@ export default function BookmarkItem(props) {
         >
           Delete
         </button>
-        <Link to={`/edit/${props.id}`}>Edit Bookmark</Link>
+        <Link className="button" to={`/edit/${props.id}`}>Edit Bookmark</Link>
       </div>
     </li>
     )}
